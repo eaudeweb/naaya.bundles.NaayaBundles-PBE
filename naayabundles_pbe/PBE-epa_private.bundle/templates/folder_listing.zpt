@@ -160,6 +160,7 @@ function submit_form_action(action){
 					folder python:folder_info['self'];
 					contributor folder/contributor;
 					username python: auth_tool.name_from_userid(contributor) or contributor;
+          is_disabled python:auth_tool.is_disabled(contributor);
 					user_quoted python:here.utUrlEncode(contributor);
 					source_title python: auth_tool.source_name_from_userid(contributor);"
 					on-error="here/rstk/catch_unauthorized">
@@ -202,9 +203,11 @@ function submit_form_action(action){
 						</tal:block>
 					</td>
 					<td>
-						<a rel="external" tal:condition="python:source_title.lower() == 'eionet'"
+						<a rel="external" tal:condition="python:source_title.lower() == 'eionet' and not is_disabled"
 							tal:attributes="href string:http://www.eionet.europa.eu/directory/user?uid=${user_quoted}"
 							tal:content="username" />
+						<tal:block condition="python:source_title.lower() == 'eionet' and is_disabled"
+							content="username" />
 						<a tal:condition="python:source_title.lower() == 'local' and
 																		here.checkPermissionPublishObjects()"
 							tal:attributes="href string:${site_url}/admin_edituser_html?name=${user_quoted}&from=all"
@@ -250,6 +253,7 @@ function submit_form_action(action){
 					object python:object_info['self'];
 					contributor object/contributor;
 					username python: auth_tool.name_from_userid(contributor) or contributor;
+          is_disabled python:auth_tool.is_disabled(contributor);
 					user_quoted python:here.utUrlEncode(contributor);
 					source_title python: auth_tool.source_name_from_userid(contributor);"
 					on-error="here/rstk/catch_unauthorized">
@@ -294,9 +298,11 @@ function submit_form_action(action){
 					</td>
 
 					<td>
-						<a rel="external" tal:condition="python:source_title.lower() == 'eionet'"
+						<a rel="external" tal:condition="python:source_title.lower() == 'eionet' and not is_disabled"
 							tal:attributes="href string:http://www.eionet.europa.eu/directory/user?uid=${user_quoted}"
 							tal:content="username" />
+						<tal:block condition="python:source_title.lower() == 'eionet' and is_disabled"
+							content="username" />
 						<a tal:condition="python:source_title.lower() == 'local' and
 																		here.checkPermissionPublishObjects()"
 							tal:attributes="href string:${site_url}/admin_edituser_html?name=${user_quoted}&from=all"
